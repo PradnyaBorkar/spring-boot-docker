@@ -1,0 +1,45 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+group = 'com.learning.docker'
+project.archivesBaseName = 'docker-spring-boot'
+
+buildDir = 'target'
+
+jar {
+    doFirst {
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    manifest {
+        attributes 'Implementation-Title': 'docker-spring-boot'
+        attributes 'Implementation-Version': project.version
+        attributes 'Implementation-Vendor': 'Learning Pune'
+        attributes 'Implementation-Vendor-Id': 'com.learning'
+        attributes 'Built-On': new Date().format("yyyy-MM-dd hh:mm:ss")
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
